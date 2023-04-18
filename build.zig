@@ -17,6 +17,8 @@ pub fn build(b: *std.Build) void {
     // See https://gitlab.com/bztsrc/model3d/-/issues/19
     lib.addCSourceFile("src/c/m3d.c", &.{ "-std=c89", "-fno-sanitize=alignment" });
 
+    b.installArtifact(lib);
+
     // TODO: add a dependency on libmodel3d here once supported
     _ = b.addModule("mach-model3d", .{
         .source_file = .{ .path = "src/main.zig" },
@@ -31,8 +33,6 @@ pub fn build(b: *std.Build) void {
 
     main_tests.linkLibrary(lib);
     main_tests.addIncludePath("src/c");
-
-    main_tests.install();
 
     const test_step = b.step("test", "Run library tests");
     test_step.dependOn(&b.addRunArtifact(main_tests).step);
