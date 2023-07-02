@@ -16,6 +16,7 @@ pub fn build(b: *std.Build) void {
     // See https://gitlab.com/bztsrc/model3d/-/issues/19
     lib.addCSourceFile("src/c/m3d.c", &.{ "-std=c89", "-fno-sanitize=alignment" });
     b.installArtifact(lib);
+    lib.installHeader("src/c/m3d.h", "m3d.h");
 
     // TODO: add a dependency on libmodel3d here once supported
     _ = b.addModule("mach-model3d", .{
