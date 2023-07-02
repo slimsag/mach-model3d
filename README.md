@@ -14,6 +14,43 @@ This is an _experimental_ Mach library, according to our [stability guarantees](
 
 [Why this library is not declared stable yet](https://machengine.org/next/docs/libs/experimental/#model3d)
 
+## Getting started
+
+### Adding dependency
+
+Create a `build.zig.zon` file in your project (replace `$LATEST_COMMIT` with the latest commit hash):
+
+```
+.{
+    .name = "mypkg",
+    .version = "0.1.0",
+    .dependencies = .{
+        .mach_model3d = .{
+            .url = "https://github.com/hexops/mach-model3d/archive/$LATEST_COMMIT.tar.gz",
+        },
+    },
+}
+```
+
+Run `zig build` in your project, and the compiler instruct you to add a `.hash = "..."` field next to `.url`.
+
+Then use the dependency in your `build.zig`:
+
+```zig
+...
+pub fn build(b: *Build) void {
+    ...
+    const mach_model3d = b.dependency("mach_model3d", .{
+        .target = target,
+        .optimize = optimize,
+    });
+    exe.addModule("mach-model3d", mach_model3d.module("mach-model3d"));
+    exe.linkLibrary(mach_model3d.artifact("mach-model3d"));
+}
+```
+
+You may then `const model3d = @import("mach-model3d");` and use it.
+
 ## Join the community
 
 Join the Mach community [on Discord](https://discord.gg/XNG3NZgCqp) to discuss this project, ask questions, get help, etc.

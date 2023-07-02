@@ -5,18 +5,16 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
 
     const lib = b.addStaticLibrary(.{
-        .name = "model3d",
+        .name = "mach-model3d",
         .target = target,
         .optimize = optimize,
     });
-
     lib.linkLibC();
     lib.addIncludePath("src/c");
 
     // Note: model3d needs unaligned accesses, which are safe on all modern architectures.
     // See https://gitlab.com/bztsrc/model3d/-/issues/19
     lib.addCSourceFile("src/c/m3d.c", &.{ "-std=c89", "-fno-sanitize=alignment" });
-
     b.installArtifact(lib);
 
     // TODO: add a dependency on libmodel3d here once supported
@@ -30,7 +28,6 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
-
     main_tests.linkLibrary(lib);
     main_tests.addIncludePath("src/c");
 
