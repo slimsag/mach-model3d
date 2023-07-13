@@ -58,7 +58,3 @@ Join the Mach community [on Discord](https://discord.gg/XNG3NZgCqp) to discuss t
 ## Issues
 
 Issues are tracked in the [main Mach repository](https://github.com/hexops/mach/issues?q=is%3Aissue+is%3Aopen+label%3Amodel3d).
-
-## Contributing
-
-Contributions are very welcome. Pull requests must be sent to [the main repository](https://github.com/hexops/mach/tree/main/libs/model3d) to avoid some complex merge conflicts we'd get by accepting contributions in both repositories. Once the changes are merged there, they'll get sync'd to this repository automatically.
