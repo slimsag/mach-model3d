@@ -43,7 +43,7 @@ const M3d = @This();
 
 handle: *c.m3d_t,
 
-pub fn load(data: [:0]u8, readfile_fn: ?ReadFn, free_fn: ?FreeFn, mtllib: ?M3d) ?M3d {
+pub fn load(data: [:0]const u8, readfile_fn: ?ReadFn, free_fn: ?FreeFn, mtllib: ?M3d) ?M3d {
     return .{
         .handle = c.m3d_load(
             data.ptr,
