@@ -586,7 +586,7 @@ typedef int (*m3dprsc_t)(const char *name, const void *script, uint32_t len, m3d
 
 /*** C prototypes ***/
 /* import / export */
-m3d_t *m3d_load(unsigned char *data, m3dread_t readfilecb, m3dfree_t freecb, m3d_t *mtllib);
+m3d_t *m3d_load(unsigned const char *data, m3dread_t readfilecb, m3dfree_t freecb, m3d_t *mtllib);
 unsigned char *m3d_save(m3d_t *model, int quality, int flags, unsigned int *size);
 void m3d_free(m3d_t *model);
 /* generate animation pose skeleton */
@@ -2377,7 +2377,7 @@ static M3D_FLOAT _m3d_rsq(M3D_FLOAT x)
 /**
  * Function to decode a Model 3D into in-memory format
  */
-m3d_t *m3d_load(unsigned char *data, m3dread_t readfilecb, m3dfree_t freecb, m3d_t *mtllib)
+m3d_t *m3d_load(unsigned const char *data, m3dread_t readfilecb, m3dfree_t freecb, m3d_t *mtllib)
 {
     unsigned char *end, *chunk, *buff, weights[8];
     unsigned int i, j, k, l, n, am, len = 0, reclen, offs;
