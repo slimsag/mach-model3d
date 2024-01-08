@@ -11,18 +11,17 @@ pub fn build(b: *std.Build) void {
     });
     lib.linkLibC();
     lib.addIncludePath(.{ .path = "src/c" });
-
-    // Note: model3d needs unaligned accesses, which are safe on all modern architectures.
-    // See https://gitlab.com/bztsrc/model3d/-/issues/19
     lib.addCSourceFile(.{
         .file = .{ .path = "src/c/m3d.c" },
+        // Note: model3d needs unaligned accesses, which are safe on all modern architectures.
+        // See https://gitlab.com/bztsrc/model3d/-/issues/19
         .flags = &.{ "-std=c89", "-fno-sanitize=alignment" },
     });
-    b.installArtifact(lib);
     lib.installHeader("src/c/m3d.h", "m3d.h");
+    b.installArtifact(lib);
 
-    // TODO: add a dependency on libmodel3d here once supported
-    _ = b.addModule("mach-model3d", .{ .source_file = .{ .path = "src/main.zig" } });
+    const module = b.addModule("mach-model3d", .{ .root_source_file = .{ .path = "src/main.zig" } });
+    module.linkLibrary(lib);
 
     const main_tests = b.addTest(.{
         .name = "model3d-tests",
@@ -31,7 +30,6 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     main_tests.linkLibrary(lib);
-    main_tests.addIncludePath(.{ .path = "src/c" });
 
     const test_step = b.step("test", "Run library tests");
     test_step.dependOn(&b.addRunArtifact(main_tests).step);
