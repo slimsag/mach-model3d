@@ -218,14 +218,14 @@ test {
 
     var model_file = try std.fs.cwd().openFile(thisDir("/../assets/cube.m3d"), .{});
     defer model_file.close();
-    var model_data = try model_file.readToEndAllocOptions(testing.allocator, 1024, 119, @alignOf(u8), 0);
+    const model_data = try model_file.readToEndAllocOptions(testing.allocator, 1024, 119, @alignOf(u8), 0);
     defer testing.allocator.free(model_data);
 
     const model = M3d.load(model_data, null, null, null) orelse return error.Fail;
     defer model.deinit();
     try testing.expectEqualStrings(model.name(), "cube.obj");
 
-    var out = try model.save(.float, .{});
+    const out = try model.save(.float, .{});
     defer std.c.free(out.ptr);
     try testing.expect(out.len >= 119);
 }
