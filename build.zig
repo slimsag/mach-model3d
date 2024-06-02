@@ -10,22 +10,22 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     lib.linkLibC();
-    lib.addIncludePath(.{ .path = "src/c" });
+    lib.addIncludePath(b.path("src/c"));
     lib.addCSourceFile(.{
-        .file = .{ .path = "src/c/m3d.c" },
+        .file = b.path("src/c/m3d.c"),
         // Note: model3d needs unaligned accesses, which are safe on all modern architectures.
         // See https://gitlab.com/bztsrc/model3d/-/issues/19
         .flags = &.{ "-std=c89", "-fno-sanitize=alignment" },
     });
-    lib.installHeader("src/c/m3d.h", "m3d.h");
+    lib.installHeader(b.path("src/c/m3d.h"), "m3d.h");
     b.installArtifact(lib);
 
-    const module = b.addModule("mach-model3d", .{ .root_source_file = .{ .path = "src/main.zig" } });
+    const module = b.addModule("mach-model3d", .{ .root_source_file = b.path("src/main.zig") });
     module.linkLibrary(lib);
 
     const main_tests = b.addTest(.{
         .name = "model3d-tests",
-        .root_source_file = .{ .path = "src/main.zig" },
+        .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
     });
